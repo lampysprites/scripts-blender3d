@@ -80,7 +80,7 @@ class SHKI_OT_AxisAlign(bpy.types.Operator):
         cent = None
         if isinstance(ef, bmesh.types.BMFace):
             aim = ef.normal
-            ef.calc_center_bounds()
+            cent = ef.calc_center_bounds()
         elif isinstance(ef, bmesh.types.BMEdge):
             aim = Vector(ef.verts[1].co) - Vector(ef.verts[0].co)
             cent = .5 * (Vector(ef.verts[1].co) + Vector(ef.verts[0].co))
