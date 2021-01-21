@@ -4,9 +4,9 @@ from mathutils import Vector,Matrix,Quaternion
 
 
 class SHKI_OT_AxisAlign(bpy.types.Operator):
-    """Rotate the selecton to align the active face normal with the provided axis"""
+    """Rotate the selecton to align the active edge or a normal of the active face with an axis"""
     bl_idname = "shurushki.axis_align"
-    bl_label = "Axis Align Face"
+    bl_label = "Axis Align"
     bl_options = {'REGISTER', 'UNDO'}
 
     p_axis:bpy.props.EnumProperty(
@@ -36,10 +36,9 @@ class SHKI_OT_AxisAlign(bpy.types.Operator):
 
         # Get a BMesh representation
         bm = bmesh.from_edit_mesh(me)
-        bm.select_mode = {'FACE'}
         f = bm.select_history.active
 
-        return f is not None and isinstance(f, bmesh.types.BMFace)
+        return f is not None and (isinstance(f, bmesh.types.BMFace) or isinstance(f, bmesh.types.BMEdge))
 
     def p_axis_to_vector(self):
         v = None
@@ -75,11 +74,19 @@ class SHKI_OT_AxisAlign(bpy.types.Operator):
 
         # Get a BMesh representation
         bm = bmesh.from_edit_mesh(me)
-        bm.select_mode = {'FACE'}
-        f = bm.select_history.active
+        ef = bm.select_history.active
 
-        diff = f.normal.rotation_difference(self.p_axis_to_vector()).to_matrix()
-        bmesh.ops.rotate(bm, cent=f.calc_center_bounds(), matrix=diff, verts=[v for v in bm.verts if v.select])
+        aim = None
+        cent = None
+        if isinstance(ef, bmesh.types.BMFace):
+            aim = ef.normal
+            ef.calc_center_bounds()
+        elif isinstance(ef, bmesh.types.BMEdge):
+            aim = Vector(ef.verts[1].co) - Vector(ef.verts[0].co)
+            cent = .5 * (Vector(ef.verts[1].co) + Vector(ef.verts[0].co))
+
+        diff = aim.rotation_difference(self.p_axis_to_vector()).to_matrix()
+        bmesh.ops.rotate(bm, cent=cent, matrix=diff, verts=[v for v in bm.verts if v.select])
 
         # finalize
         bmesh.update_edit_mesh(me, True)
