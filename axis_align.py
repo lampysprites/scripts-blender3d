@@ -63,11 +63,6 @@ class SHKI_OT_AxisAlign(bpy.types.Operator):
         return v
 
 
-    def invoke(self, context, event):
-        wm = context.window_manager
-        return wm.invoke_props_dialog(self)
-
-
     def execute(self, context):
         obj = bpy.context.edit_object
         me = obj.data

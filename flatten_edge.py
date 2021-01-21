@@ -15,6 +15,7 @@ class SHKI_OT_FlattenEdge(bpy.types.Operator):
     def poll(cls, context):        
         if context.mode != 'EDIT_MESH':
             return False
+        return True
         
         obj = bpy.context.edit_object
         me = obj.data
@@ -25,11 +26,6 @@ class SHKI_OT_FlattenEdge(bpy.types.Operator):
         ax = bm.select_history.active
 
         return ax is not None and isinstance(ax, bmesh.types.BMEdge) and 2 == len(ax.link_faces)
-    
-    
-    def invoke(self, context, event):
-        wm = context.window_manager
-        return wm.invoke_props_dialog(self)
 
 
     def execute(self, context):
