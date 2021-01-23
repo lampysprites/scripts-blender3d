@@ -54,6 +54,23 @@ class SHKI_OT_FlattenEdge(bpy.types.Operator):
         rotcent = Vector(ax.verts[0].co)
         rotax = Vector(ax.verts[1].co) - rotcent
         rotangle = ax.calc_face_angle_signed()
+        rotmat = Matrix.Rotation(rotangle, 4, rotax)
+
+        # kinda hard to figure out which direction the angle is, so let' just
+        # test it the same way it's applied later and flip it if there's a mistake
+        face_a = None
+        face_b = None
+        for f in ax.link_faces:
+            if f.select:
+                face_a = f
+            else:
+                face_b = f
+
+        ndiff = rotmat @ face_a.normal - face_b.normal
+        if ndiff.dot(ndiff) > 0.001:
+            rotangle = -rotangle
+
+        # just in case let user override it
         if self.p_flip:
             rotangle = -rotangle
         rotmat = Matrix.Rotation(rotangle, 4, rotax)
