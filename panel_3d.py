@@ -18,3 +18,6 @@ class SHKI_PT_Panel3D(bpy.types.Panel):
 
         row = layout.row()
         row.operator("shurushki.axis_align")
+
+        row = layout.row()
+        row.operator("shurushki.pixel_copy")

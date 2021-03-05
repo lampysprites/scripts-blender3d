@@ -1,6 +1,7 @@
 from .panel_3d import *
 from .flatten_edge import *
 from .axis_align import *
+from .pixel_copy import *
 
 
 bl_info = {
@@ -18,7 +19,8 @@ bl_info = {
 classes = (
     SHKI_PT_Panel3D,
     SHKI_OT_FlattenEdge,
-    SHKI_OT_AxisAlign
+    SHKI_OT_AxisAlign,
+    SHKI_OT_PixelCopy
 )
 
 
