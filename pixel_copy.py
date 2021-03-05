@@ -81,8 +81,6 @@ class SHKI_OT_PixelCopy(bpy.types.Operator):
         uv_to = bm.loops.layers.uv[int(self.p_dest_uv)]
 
         size = [1/x for x in img_to.size]
-
-        
         
         ttion = bmesh.ops.triangulate(bm, faces=faces)
         tris = ttion["faces"]
