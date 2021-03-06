@@ -24,3 +24,13 @@ def set_pixel(image, x, y, r=0.0, g=0.0, b=0.0, a=1.0):
         image.pixels[idx + 3] = a
     except:
         pass
+
+
+def get_pixel(image, x, y):
+    """Set pixel to a given color. When the coordinate is out of range nothing happens."""
+    w, h = image.size
+    idx = 4 * (int(y * h) * w + int(x * w))
+    try:
+        return image.pixels[idx], image.pixels[idx + 1], image.pixels[idx + 2], image.pixels[idx + 3]
+    except:
+        return None
