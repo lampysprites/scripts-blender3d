@@ -24,3 +24,6 @@ class SHKI_PT_Panel3D(bpy.types.Panel):
 
         row = layout.row()
         row.operator("shurushki.sample_render")
+
+        row = layout.row()
+        row.operator("shurushki.explore")

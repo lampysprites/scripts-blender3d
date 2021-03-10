@@ -2,7 +2,8 @@ from .panel_3d import *
 from .flatten_edge import *
 from .axis_align import *
 from .pixel_copy import *
-from.sample_render import *
+from .sample_render import *
+from .explore import *
 
 
 bl_info = {
@@ -22,7 +23,8 @@ classes = (
     SHKI_OT_FlattenEdge,
     SHKI_OT_AxisAlign,
     SHKI_OT_PixelCopy,
-    SHKI_OT_SampleRender
+    SHKI_OT_SampleRender,
+    SHKI_OT_Explore
 )
 
 
