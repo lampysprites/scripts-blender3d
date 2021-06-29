@@ -77,6 +77,9 @@ class SHKI_OT_PixelCopy(bpy.types.Operator):
 
         img_from = bpy.data.images[int(self.p_source_img)]
         img_to = bpy.data.images[int(self.p_dest_img)]
+        # make a copy because accessing the image is omega slow
+        px_from = list(img_from.pixels)
+        px_to = list(img_to.pixels)
         uv_from = bm.loops.layers.uv[int(self.p_source_uv)]
         uv_to = bm.loops.layers.uv[int(self.p_dest_uv)]
 
@@ -92,7 +95,7 @@ class SHKI_OT_PixelCopy(bpy.types.Operator):
         visited = {}
 
         if self.p_clear:
-            img_to.pixels.foreach_set([i % 4 == 3 and 1.0 or 0.0  for i in range(len(img_to.pixels))])
+            px_to = [i % 4 == 3 and 1.0 or 0.0  for i in range(len(img_to.pixels))]
         
         for tri in tris:
             v1, v2, v3 = (loop[uv_to].uv.to_3d() for loop in tri.loops)
@@ -105,7 +108,7 @@ class SHKI_OT_PixelCopy(bpy.types.Operator):
                     v1, v2, v3,
                     w1, w2, w3)
 
-                copy_pixel(img_from, img_to, source_uv.x, source_uv.y, u, v)
+                copy_pixel(px_from, px_to, img_from.size, source_uv.x, source_uv.y, img_to.size, u, v)
                 
                 if self.p_highlight != 'none':
                     if not (u, v) in visited:
@@ -121,7 +124,10 @@ class SHKI_OT_PixelCopy(bpy.types.Operator):
 
                     if shared_edge(tri1, tri2) == -1:
                         col = self.p_highlight_color
-                        set_pixel(img_to, u, v, col.r, col.g, col.b)
+                        set_pixel(px_to, img_to.size, u, v, col.r, col.g, col.b)
+
+        # copy data back to the image
+        img_to.pixels.foreach_set(px_to)
 
         return {'FINISHED'}
 

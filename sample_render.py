@@ -65,16 +65,18 @@ class SHKI_OT_SampleRender(bpy.types.Operator):
         sv3d.overlay.show_overlays = overlays_were
         sv3d.shading.type = shading_was
 
-        return buffer
+        return list(buffer)
 
 
     def execute(self, context):
         buf = self.render_view_offscreen(context)
 
         img = bpy.data.images[int(self.p_dest_img)]
+        # make a copy because accessing the image is omega slow
+        px = list(img.pixels)
         size = [1/l for l in img.size]
         if self.p_clear:
-            img.pixels.foreach_set([i % 4 == 3 and 1.0 or 0.0  for i in range(len(img.pixels))])
+            px = [i % 4 == 3 and 1.0 or 0.0  for i in range(len(img.pixels))]
 
         obj = None # the active mesh
         bm = None # BMesh representation
@@ -109,7 +111,7 @@ class SHKI_OT_SampleRender(bpy.types.Operator):
             # iterate over pixels in the UV space
             for (u, v) in rasterize(size, v1, v2, v3):
                 if self.p_no_overwire:
-                    r,g,b,_a = get_pixel(img, u, v)
+                    r,g,b,_a = get_pixel(px, img.size, u, v)
                     if r > 0.0 or g > 0.0 or b > 0.0:
                         continue
 
@@ -126,7 +128,7 @@ class SHKI_OT_SampleRender(bpy.types.Operator):
                     r = linear_to_srgb(buf[buf_idx] / 255)
                     g = linear_to_srgb(buf[buf_idx + 1] / 255)
                     b = linear_to_srgb(buf[buf_idx + 2] / 255)
-                    set_pixel(img, u, v, r, g, b)
+                    set_pixel(px, img.size, u, v, r, g, b)
                 except:
                     pass
                 
@@ -144,7 +146,10 @@ class SHKI_OT_SampleRender(bpy.types.Operator):
 
                     if shared_edge(tri1, tri2) == -1:
                         col = self.p_highlight_color
-                        set_pixel(img_to, u, v, col.r, col.g, col.b)
+                        set_pixel(px, img.size, u, v, col.r, col.g, col.b)
+        
+        # copy data back to the image
+        img.pixels.foreach_set(px)
 
         return {'FINISHED'}
 
