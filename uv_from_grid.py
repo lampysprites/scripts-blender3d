@@ -16,12 +16,12 @@ class SHKI_OT_UVFromGrid(bpy.types.Operator):
         name = "Axis",
         description = "Axis to which to align the face",
         items = [
-            ("XPOS", "X+", ""),
-            ("XNEG", "X-", ""),          
-            ("YPOS", "Y+", ""),
-            ("YNEG", "Y-", ""),              
             ("ZPOS", "Z+", ""),
-            ("ZNEG", "Z-", ""),                  
+            ("ZNEG", "Z-", ""),
+            ("XPOS", "X+", ""),
+            ("XNEG", "X-", ""),
+            ("YPOS", "Y+", ""),
+            ("YNEG", "Y-", ""),
         ]
     )
 
@@ -33,7 +33,7 @@ class SHKI_OT_UVFromGrid(bpy.types.Operator):
 
         obj = context.edit_object
         return obj is not None and obj.data is not None and obj.data.uv_layers is not None
-    
+
 
     def execute(self, context):
         obj = bpy.context.edit_object
@@ -49,40 +49,39 @@ class SHKI_OT_UVFromGrid(bpy.types.Operator):
         #     self.report({'WARNING'}, "Operation cancelled: No face selected")
         #     return {'CANCELLED'}
 
-
         # projection
         if self.p_axis == "XPOS":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.yz * size / grid_scale
         elif self.p_axis == "XNEG":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.yz * negate_first * size / grid_scale
         elif self.p_axis == "YPOS":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.xz * negate_first * size / grid_scale
         elif self.p_axis == "YNEG":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.xz * size / grid_scale
         elif self.p_axis == "ZPOS":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.xy * size / grid_scale
         elif self.p_axis == "ZNEG":
             for face in selected_faces:
-                for loop in face.loops: 
+                for loop in face.loops:
                     loop[uv].uv.xy = loop.vert.co.xy * negate_first * size / grid_scale
 
-        
+
         # apply changes
         bmesh.update_edit_mesh(obj.data)
 
         return {'FINISHED'}
-    
-    
+
+
     # def invoke(self, context, event):
     #     wm = context.window_manager
     #     return wm.invoke_props_dialog(self)
