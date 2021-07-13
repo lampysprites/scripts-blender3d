@@ -34,6 +34,10 @@ Copy weight data from the active to the selected verts. Existing weights are cle
 Move verts from one group to another with the same weights. Preserves the data related to other groups. If the vert already belongs to the new group, the weight is replaced.
 
 
+### Flip Groups
+
+Swaps the weights in all groups with .L and .R suffixes for every selected vertex.
+
 ## Texture
 
 ### Pixel Copy
