@@ -8,6 +8,7 @@ from .uv_from_grid import *
 from .check_weights import *
 from .copy_weights import *
 from .replace_bone import *
+from .flip_groups import *
 
 
 bl_info = {
@@ -36,7 +37,8 @@ classes = (
     SHKI_OT_UVFromGrid,
     SHKI_OT_CheckWeights,
     SHKI_OT_CopyWeights,
-    SHKI_OT_ReplaceBone
+    SHKI_OT_ReplaceBone,
+    SHKI_OT_FlipGroups
 )
 
 

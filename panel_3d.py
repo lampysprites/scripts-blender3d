@@ -62,6 +62,9 @@ class SHKI_PT_PanelSkin(bpy.types.Panel):
         row = layout.row()
         row.operator("shurushki.replace_bone")
 
+        row = layout.row()
+        row.operator("shurushki.flip_groups")
+
 
 class SHKI_PT_PanelRender(bpy.types.Panel):
     """hey"""
