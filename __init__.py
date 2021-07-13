@@ -23,7 +23,11 @@ bl_info = {
 
 
 classes = (
-    SHKI_PT_Panel3D,
+    SHKI_PT_PanelMesh,
+    SHKI_PT_PanelSkin,
+    SHKI_PT_PanelUV,
+    SHKI_PT_PanelRender,
+    
     SHKI_OT_FlattenEdge,
     SHKI_OT_AxisAlign,
     SHKI_OT_PixelCopy,
