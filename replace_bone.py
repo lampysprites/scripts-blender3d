@@ -60,6 +60,9 @@ class SHKI_OT_ReplaceBone(bpy.types.Operator):
                 changed += 1
                 v[weights][i_to] = v[weights][i_from]
                 del v[weights][i_from]
+                
+        # apply changes
+        bmesh.update_edit_mesh(obj.data)
 
         self.report({'INFO'}, f"Changed {changed} verts")
 

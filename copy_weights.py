@@ -36,6 +36,9 @@ class SHKI_OT_CopyWeights(bpy.types.Operator):
 
             for i in source_groups:
                 d[weights][i] = source[weights][i]
+                
+        # apply changes
+        bmesh.update_edit_mesh(obj.data)
 
         self.report({'INFO'}, f"Moved {len(dests)} verts to {len(source_groups)} layers")
         bpy.ops.shurushki.check_weights() # displays the copied weights
