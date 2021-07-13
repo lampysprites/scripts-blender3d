@@ -30,3 +30,12 @@ class SHKI_PT_Panel3D(bpy.types.Panel):
 
         row = layout.row()
         row.operator("shurushki.uv_from_grid")
+
+        row = layout.row()
+        row.operator("shurushki.check_weights")
+
+        row = layout.row()
+        row.operator("shurushki.copy_weights")
+
+        row = layout.row()
+        row.operator("shurushki.replace_bone")
