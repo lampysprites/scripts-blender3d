@@ -5,6 +5,8 @@ from .pixel_copy import *
 from .sample_render import *
 from .explore import *
 from .uv_from_grid import *
+from .check_weights import *
+from .copy_weights import *
 
 
 bl_info = {
@@ -26,7 +28,9 @@ classes = (
     SHKI_OT_PixelCopy,
     SHKI_OT_SampleRender,
     SHKI_OT_Explore,
-    SHKI_OT_UVFromGrid
+    SHKI_OT_UVFromGrid,
+    SHKI_OT_CheckWeights,
+    SHKI_OT_CopyWeights
 )
 
 
