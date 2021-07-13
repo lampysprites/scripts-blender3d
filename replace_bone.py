@@ -52,13 +52,16 @@ class SHKI_OT_ReplaceBone(bpy.types.Operator):
 
         i_from = int(self.p_from)
         i_to = int(self.p_to)
+
+        changed = 0
         
         for v in verts:
             if i_from in v[weights]:
+                changed += 1
                 v[weights][i_to] = v[weights][i_from]
                 del v[weights][i_from]
 
-        self.report({'INFO'}, f"Changed {len(verts)} verts")
+        self.report({'INFO'}, f"Changed {len(changed)} verts")
 
         return {'FINISHED'}
     
